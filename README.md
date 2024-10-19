@@ -71,10 +71,4 @@ python app.py
 - The summarization model used here is based on word frequency and may not handle very technical or domain-specific content optimally.
 - Large volumes of text may result in less coherent summaries.
 ---
-## Feedback
 
-For questions, suggestions, or collaboration opportunities, please don't hesitate to reach out me.
-- **Email**: [Alex Reed](mailto:alexreed@ucsb.edu)
-- **LinkedIn**: [Alex Reed on LinkedIn](https://www.linkedin.com/in/alextreed)
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alextreed)
