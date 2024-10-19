@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col s12 m8 offset-m2">
+            <div class="card">
+                <div class="card-content">
+                    <h4 class="center-align">Text Summarizer</h4>
+                    <form method="POST" action="/summarize" onsubmit="return validateForm()">
+                        <div class="input-field">
+                            <textarea id="input_text" class="materialize-textarea" name="input_text"
+                                placeholder="Enter your text here..." required></textarea>
+                            <label for="input_text">Enter your text here:</label>
+                            <div class="invalid-feedback red-text">Text cannot be empty.</div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <button type="submit" class="btn waves-effect waves-light"
+                                    style="background-color: #bc2a8d; width: 100%;">Summarize</button>
+                                <button type="button" class="btn waves-effect waves-light"
+                                    style="background-color: #bc2a8d; width: 100%; margin-top: 10px;" id="sampleBtn">Sample from Wikipedia</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% if summary %}
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <h5 class="center-align">Original Text</h5>
+                            <p>{{ original_text }}</p>
+                            <h6 class="center-align">Sentiment</h6>
+                            <div class="progress">
+                                <div class="determinate" id="originalSentimentBar" style="width: {{ (original_sentiment_score + 1) * 50 }}%;"></div>
+                            </div>
+                            <p>
+                                {% if original_sentiment == "Positive" %}
+                                <span class="green-text">Positive</span>
+                                {% elif original_sentiment == "Negative" %}
+                                <span class="red-text">Negative</span>
+                                {% else %}
+                                <span class="grey-text">Neutral</span>
+                                {% endif %}
+                            </p>
+                            <h6 class="center-align">Sentiment Score</h6>
+                            <p>{{ original_sentiment_score }}</p>
+                        </div>
+                        <div class="col s12 m6">
+                            <h5 class="center-align">Summary</h5>
+                            <p id="summaryText">{{ summary }}</p>
+                            <hr>
+                            <button class="btn waves-effect waves-light copy-button"
+                                style="background-color: #bc2a8d; width: 100%;" data-clipboard-target="#summaryText">Copy Summary</button>
+                            <h6 class="center-align">Sentiment</h6>
+                            <div class="progress">
+                                <div class="determinate" id="summarySentimentBar" style="width: {{ (summary_sentiment_score + 1) * 50 }}%;"></div>
+                            </div>
+                            <p>
+                                {% if summary_sentiment == "Positive" %}
+                                <span class="green-text">Positive</span>
+                                {% elif summary_sentiment == "Negative" %}
+                                <span class="red-text">Negative</span>
+                                {% else %}
+                                <span class="grey-text">Neutral</span>
+                                {% endif %}
+                            </p>
+                            <h6 class="center-align">Sentiment Score</h6>
+                            <p>{{ summary_sentiment_score }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if not summary %}
+            <div class="card">
+                <div class="card-content">
+                    <h5 class="center-align">How it Works</h5>
+                    <p>
+                        This Text Summarizer uses natural language processing to extract the most important sentences from your input text and provide a concise summary.
+                    </p>
+                    <h5 class="center-align">Why Use It?</h5>
+                    <p>
+                        Save time and quickly get the key points from long articles, documents, or any text content. It's great for research, studying, or just getting to the main ideas.
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+<script>
+    // Function to handle the input event
+    function handleInput() {
+        const inputText = document.getElementById("input_text");
+        const invalidFeedback = document.querySelector(".invalid-feedback");
+        if (inputText.value.trim() === "") {
+            // Display the invalid feedback if the input is empty
+            invalidFeedback.style.display = "block";
+        } else {
+            // Hide the invalid feedback if the input is not empty
+            invalidFeedback.style.display = "none";
+        }
+        // Auto-resize the textarea
+        M.textareaAutoResize(inputText);
+    }
+
+    // Initialize Materialize components
+    $(document).ready(function () {
+        M.AutoInit();
+
+        // Add an input event listener to the textarea
+        const inputText = document.getElementById("input_text");
+        inputText.addEventListener("input", handleInput);
+
+        // Trigger the input event on page load
+        handleInput();
+
+        // Initialize clipboard.js for copy buttons
+        new ClipboardJS('.copy-button');
+
+        // Color sentiment bars based on scores
+        const originalSentimentScore = parseFloat('{{ original_sentiment_score|default("0")|safe }}');
+        const summarySentimentScore = parseFloat('{{ summary_sentiment_score|default("0")|safe }}');
+        
+        document.getElementById("originalSentimentBar").style.backgroundColor = sentimentColor(originalSentimentScore);
+        document.getElementById("summarySentimentBar").style.backgroundColor = sentimentColor(summarySentimentScore);
+    });
+
+    // "Sample from Wikipedia" button click event to fetch random Wikipedia text
+    document.getElementById("sampleBtn").addEventListener("click", function () {
+        fetchRandomWikipediaText();
+    });
+
+    // Function to fetch random Wikipedia text and populate the textarea
+    function fetchRandomWikipediaText() {
+        fetch("https://en.wikipedia.org/api/rest_v1/page/random/summary")
+            .then(response => response.json())
+            .then(data => {
+                const randomText = data.extract || "No content available.";
+                const inputText = document.getElementById("input_text");
+                inputText.value = randomText;
+                // Auto-resize the textarea to fit the content
+                M.textareaAutoResize(inputText);
+                // Trigger the input event to check for empty input
+                handleInput();
+                // Automatically submit the form to summarize the text
+                document.querySelector("form").submit();
+            })
+            .catch(error => {
+                console.error("Error fetching random Wikipedia text:", error);
+            });
+    }
+
+    // Form validation
+    function validateForm() {
+        const inputText = document.getElementById("input_text").value.trim();
+        if (inputText === "") {
+            // Display the invalid feedback and prevent form submission
+            document.querySelector(".invalid-feedback").style.display = "block";
+            return false;
+        } else {
+            // Hide the invalid feedback if the input is not empty
+            document.querySelector(".invalid-feedback").style.display = "none";
+            return true;
+        }
+    }
+
+    function sentimentColor(score) {
+        // Map sentiment score to a color gradient
+        const color = `hsl(${(score + 1) * 60}, 100%, 50%)`;
+        return color;
+    }
+</script>
+
+{% endblock %}
