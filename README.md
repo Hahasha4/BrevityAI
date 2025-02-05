@@ -2,33 +2,21 @@
 
 # Text Summarizer with Sentiment Analysis Web App
 
-![Demo GIF](./demo.gif)
-
 The Text Summarizer is a web application that leverages natural language processing techniques to create concise and coherent summaries from longer pieces of text. It simplifies the process of information extraction, making it easier for users to digest and comprehend voluminous content such as articles, reports, and documents.Additionally, it includes sentiment analysis for the original text.
-
-This project builds upon previous work in the [NLP-Example Repository](https://github.com/alex-t-reed/NLP-Example), which contains Python scripts for Natural Language Processing (NLP) tasks and text summarization.
-
-- [Text Summarizer with Sentiment Analysis Web App](#text-summarizer-with-sentiment-analysis-web-app)
-  - [Features](#features)
-  - [Technologies Used](#technologies-used)
-  - [Usage](#usage)
-  - [Installation](#installation)
-  - [Limitations](#limitations)
-  - [Feedback](#feedback)
 
 ## Features
 
 - User-friendly web interface for text summarization.
 - Automatic summarization of input text.
-- Option to sample random content from Wikipedia for summarization.
+- Option to upload text files containing articles.
 - Sentiment analysis for original and summary text.
 
 ## Technologies Used
 
 - Python for backend logic.
 - Flask web framework for building the web application.
-- NLTK (Natural Language Toolkit) for text processing and summarization.
-- Materialize for styling the user interface.
+- NLTK (Natural Language Toolkit) and BART for text processing, extractive and abstractive summarization.
+- HTML,CSS for styling the user interface.
 - TextBlob for sentiment analysis.
 
 ## Usage
@@ -37,7 +25,7 @@ This project builds upon previous work in the [NLP-Example Repository](https://g
 
 2. **Summarize**: Click the "Summarize" button to generate a summary of the input text.
 
-3. **Sample from Wikipedia**: Optionally, click the "Sample from Wikipedia" button to fetch random Wikipedia text for summarization.
+3. **Upload Text File**: Optionally, click the "Upload File" button to fetch content from text files for summarization.
 
 4. **View Summary**: The generated summary will be displayed on the same page along with the original text.
 
@@ -63,9 +51,6 @@ pip install -r requirements.txt
 python app.py
 ```
 
-4. Open a web browser and visit http://127.0.0.1:5000 to use the Text Summarizer.
-
-## Limitations
 
 - The quality of the summary depends on the complexity and quality of the input text. It may not always capture nuances and context effectively.
 - The summarization model used here is based on word frequency and may not handle very technical or domain-specific content optimally.
