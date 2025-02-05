@@ -50,8 +50,7 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
-
-
+## Limitations
 - The quality of the summary depends on the complexity and quality of the input text. It may not always capture nuances and context effectively.
 - The summarization model used here is based on word frequency and may not handle very technical or domain-specific content optimally.
 - Large volumes of text may result in less coherent summaries.
