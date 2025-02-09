@@ -54,7 +54,7 @@
                         <div class="col s12 m6">
                             <h5 class="center-align">Original Text</h5>
                             <p>{{ original_text }}</p>
-                            <h6 class="center-align">Sentiment</h6>
+                            <h6 class="center-align">Polarity</h6>
                             <div class="progress">
                                 <div class="determinate" id="originalSentimentBar" style="width: {{ (original_sentiment_score + 1) * 50 }}%;"></div>
                             </div>
@@ -67,7 +67,7 @@
                                 <span class="grey-text">Neutral</span>
                                 {% endif %}
                             </p>
-                            <h6 class="center-align">Sentiment Score</h6>
+                            <h6 class="center-align">Polarity Score</h6>
                             <p>{{ original_sentiment_score }}</p>
                         </div>
                         <div class="col s12 m6">
@@ -76,7 +76,7 @@
                             <hr>
                             <button class="btn waves-effect waves-light copy-button"
                                 style="background-color: #bc2a8d;; width: 100%;" data-clipboard-target="#summaryText">Copy Summary</button>
-                            <h6 class="center-align">Sentiment</h6>
+                            <h6 class="center-align">Polarity/h6>
                             <div class="progress">
                                 <div class="determinate" id="summarySentimentBar" style="width: {{ (summary_sentiment_score + 1) * 50 }}%;"></div>
                             </div>
@@ -89,7 +89,7 @@
                                 <span class="grey-text">Neutral</span>
                                 {% endif %}
                             </p>
-                            <h6 class="center-align">Sentiment Score</h6>
+                            <h6 class="center-align">Polarity Score</h6>
                             <p>{{ summary_sentiment_score }}</p>
                         </div>
                     </div>
