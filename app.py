@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Download necessary NLTK resources
+# Download necessary NLTK resources token
 nltk.download('punkt')
 nltk.download('stopwords')
 
@@ -23,7 +23,7 @@ device = 0 if torch.cuda.is_available() else -1  # Use GPU if available
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=device)
 
 def analyze_sentiment(text):
-    """Analyze sentiment polarity of text."""
+    """Analyze emotional polarity of text."""
     analysis = TextBlob(text)
     sentiment_score = analysis.sentiment.polarity
     if sentiment_score > 0.1:
