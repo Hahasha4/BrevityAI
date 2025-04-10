@@ -12,3 +12,5 @@ textblob==0.17.1
 tqdm==4.66.1
 Werkzeug==2.3.7
 zipp==3.17.0
+torch==2.2.0
+transformers==4.38.1
